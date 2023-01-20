@@ -1,4 +1,4 @@
-import { Aside, Main, Container, ContainerDiv, Form, Inputs } from "./style"
+import { Aside, Main, Container, Form, Inputs } from "./style"
 
 import { Label } from "../../components/Label"
 import { TextAside } from "../../components/Aside"
@@ -42,6 +42,12 @@ export const HomePage = () => {
         mdr: data.mdr,
       })
       .then((res) => setResult(res.data))
+      .then(() => {
+        toast.success("Calculado !", {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 1000,
+        })
+      })
       .catch((err) => {
         console.error("Ops! Aconteceu um erro inesperado" + err)
       })
@@ -74,47 +80,43 @@ export const HomePage = () => {
   return (
     <Main>
       <Container>
-        <ContainerDiv>
+        <Form onSubmit={handleSubmit(onSubmitHandler)}>
           <h1>Simule sua Antecipação</h1>
-          <Form onSubmit={handleSubmit(onSubmitHandler)}>
-            <Label htmlFor="venda" text="Informe o valor da sua venda *" />
-            <Inputs
-              id="venda"
-              type="number"
-              placeholder="Digite o valor da venda"
-              {...register("amount")}
-            />
-            <p className="message__error">
-              {errors.amount?.message?.toString()}
-            </p>
 
-            <Label htmlFor="parcelas" text="Em quantas parcelas *" />
-            <Inputs
-              id="parcelas"
-              type="number"
-              placeholder="Digite o número de parcelas"
-              {...register("installments")}
-            />
-            <p className="message__error">
-              {errors.installments?.message?.toString()}
-            </p>
+          <Label htmlFor="venda" text="Informe o valor da sua venda *" />
+          <Inputs
+            id="venda"
+            type="number"
+            placeholder="Digite o valor da venda"
+            {...register("amount")}
+          />
+          <p className="message__error">{errors.amount?.message?.toString()}</p>
 
-            <Label htmlFor="mdr" text="Informe o percentual de MDR *" />
-            <Inputs
-              id="mdr"
-              type="number"
-              placeholder="Percentual de MDR"
-              {...register("mdr")}
-            />
-            <p className="message__error">{errors.mdr?.message?.toString()}</p>
+          <Label htmlFor="parcelas" text="Em quantas parcelas *" />
+          <Inputs
+            id="parcelas"
+            type="number"
+            placeholder="Digite o número de parcelas"
+            {...register("installments")}
+          />
+          <p className="message__error">
+            {errors.installments?.message?.toString()}
+          </p>
 
-            <button hidden>clique</button>
-          </Form>
-        </ContainerDiv>
+          <Label htmlFor="mdr" text="Informe o percentual de MDR *" />
+          <Inputs
+            id="mdr"
+            type="number"
+            placeholder="Percentual de MDR"
+            {...register("mdr")}
+          />
+          <p className="message__error">{errors.mdr?.message?.toString()}</p>
+
+          <button>Calcule</button>
+        </Form>
 
         <Aside>
           <h2>VOCÊ RECEBERÁ:</h2>
-
           <TextAside p="Amanhã:" span={`R$ ${result[1] ? result[1] : 0}`} />
 
           <TextAside
